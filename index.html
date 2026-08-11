@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZARIYA - Toko Gadget</title>
+    <title>AZARIYA GADGET - Store App</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -41,6 +41,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
+        /* HEADER */
         header {
             background: var(--primary-green);
             color: white;
@@ -55,7 +56,7 @@
         }
 
         header h1 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             flex-grow: 1;
         }
 
@@ -68,6 +69,7 @@
             width: 30px;
         }
 
+        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -90,7 +92,7 @@
             cursor: pointer;
             border: none;
             background: none;
-            width: 25%;
+            width: 33%;
         }
 
         .nav-item.active {
@@ -103,6 +105,7 @@
             margin-bottom: 3px;
         }
 
+        /* PAGE VIEWS */
         .page-view {
             display: none;
             padding: 15px;
@@ -113,12 +116,13 @@
         }
 
         .section-title {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             margin: 15px 0 10px 0;
             color: var(--primary-green);
         }
 
+        /* PRODUCTS GRID */
         .product-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -138,7 +142,7 @@
 
         .product-image {
             width: 100%;
-            height: 140px;
+            height: 130px;
             object-fit: cover;
         }
 
@@ -158,7 +162,7 @@
         .product-price {
             color: var(--danger-red);
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 4px;
         }
 
@@ -180,19 +184,22 @@
             font-weight: bold;
         }
 
+        /* BUTTONS & FORMS */
         .btn {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             font-size: 0.85rem;
+            margin-bottom: 8px;
         }
 
         .btn-primary { background: var(--primary-green); color: white; }
         .btn-cart { background: var(--light-green); color: var(--primary-green); border: 1px solid var(--primary-green); }
         .btn-buy { background: var(--primary-green); color: white; }
+        .btn-danger { background: var(--danger-red); color: white; }
 
         .opt-btn {
             padding: 6px 12px;
@@ -210,7 +217,7 @@
             font-weight: bold;
         }
 
-        .cart-item, .order-card {
+        .cart-item {
             border: 1px solid #eee;
             border-radius: 8px;
             padding: 10px;
@@ -218,6 +225,7 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            background: #ffffff;
         }
 
         .cart-item img {
@@ -225,6 +233,24 @@
             height: 60px;
             object-fit: cover;
             border-radius: 6px;
+        }
+
+        .pay-box {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: #fff;
+        }
+
+        .pay-box.active {
+            border-color: var(--primary-green);
+            background: var(--light-green);
+            color: var(--primary-green);
         }
 
         .bottom-sheet-overlay {
@@ -258,25 +284,52 @@
             position: absolute; top: 12px; right: 15px;
             background: none; border: none; font-size: 1.2rem; color: #888; cursor: pointer;
         }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
 
 <div id="app-container">
-    <header id="main-header">
+
+    <!-- HEADER UTAMA (MUNCUL SETELAH PILIH PERAN) -->
+    <header id="main-header" style="display: none;">
         <button class="header-btn" id="header-back-btn" onclick="goBack()" style="visibility: hidden;">
             <i class="fas fa-arrow-left"></i>
         </button>
         <h1 id="header-title">AZARIYA GADGET</h1>
-        <button class="header-btn" onclick="navigateTo('cart')">
+        <button class="header-btn" id="header-cart-btn" onclick="navigateTo('cart')">
             <i class="fas fa-shopping-cart"></i>
         </button>
     </header>
 
-    <!-- 1. HALAMAN BERANDA GADGET (6 PRODUK) -->
-    <div id="view-home" class="page-view active">
-        <div style="background: var(--light-green); padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; color: var(--primary-green); font-weight: bold; font-size: 0.9rem;">
-            📱 Promo Gadget Terbaru - Garansi Resmi 1 Tahun
+    <!-- 0. PORTAL UTAMA: PILIH MASUK PEMBELI / ADMIN -->
+    <div id="view-role-select" class="page-view active" style="text-align: center; padding-top: 90px;">
+        <i class="fas fa-mobile-alt" style="font-size: 4rem; color: var(--primary-green); margin-bottom: 15px;"></i>
+        <h1 style="color: var(--primary-green); font-size: 1.5rem; margin-bottom: 6px;">AZARIYA GADGET</h1>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 35px;">Silakan pilih peran untuk masuk ke aplikasi:</p>
+        
+        <div style="padding: 0 20px;">
+            <button class="btn btn-primary" style="padding: 14px; font-size: 0.95rem;" onclick="selectRole('buyer')">
+                <i class="fas fa-shopping-bag"></i> Masuk Sebagai Pembeli
+            </button>
+            <button class="btn btn-cart" style="padding: 14px; font-size: 0.95rem; margin-top: 8px;" onclick="selectRole('admin')">
+                <i class="fas fa-user-shield"></i> Masuk Sebagai Admin
+            </button>
+        </div>
+    </div>
+
+    <!-- 1. BERANDA PEMBELI (KATALOG GADGET) -->
+    <div id="view-home" class="page-view">
+        <div style="background: var(--light-green); padding: 10px; border-radius: 8px; margin-bottom: 12px; text-align: center; color: var(--primary-green); font-weight: bold; font-size: 0.8rem;">
+            📱 Promo Gadget Spesial - Garansi Resmi 1 Tahun
         </div>
 
         <div class="section-title">Gadget Bestseller</div>
@@ -286,48 +339,144 @@
         <div class="product-grid" id="regular-grid"></div>
     </div>
 
-    <!-- 2. DETAIL PRODUK -->
+    <!-- 2. DETAIL PRODUK (SLIDER FOTO/VIDEO + LINK) -->
     <div id="view-detail" class="page-view" style="padding-bottom: 80px;">
         <div id="detail-card-content"></div>
     </div>
 
-    <!-- 3. KERANJANG -->
+    <!-- 3. KERANJANG (DENGAN CHECKBOX PILIH BARANG) -->
     <div id="view-cart" class="page-view">
-        <h2 style="font-size: 1.1rem; margin-bottom: 15px;">Keranjang Belanja</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h2 style="font-size: 1.05rem;">Keranjang Belanja</h2>
+            <button onclick="changeRole()" style="background: none; border: none; color: var(--danger-red); font-size: 0.75rem; cursor: pointer; text-decoration: underline;">
+                Ganti Peran
+            </button>
+        </div>
         <div id="cart-items-container"></div>
-        <div style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold;">
-                <span>Total + Ongkir (Rp 10.000):</span>
+        <div style="border-top: 1px solid #eee; padding-top: 12px; margin-top: 15px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: bold; font-size: 0.9rem;">
+                <span>Total Item Tercentang (+ Ongkir 10rb):</span>
                 <span id="cart-total-price" style="color: var(--danger-red);">Rp 0</span>
             </div>
-            <button class="btn btn-primary" onclick="goToCheckoutFromCart()">Lanjut ke Checkout</button>
+            <button class="btn btn-primary" onclick="goToCheckoutFromCart()">Lanjut Checkout Barang Terpilih</button>
         </div>
     </div>
 
-    <!-- 4. CHECKOUT -->
+    <!-- 4. CHECKOUT (METODE PEMBAYARAN COD/QRIS/BANK) -->
     <div id="view-checkout" class="page-view">
-        <h2 style="font-size: 1.1rem; margin-bottom: 15px;">Pengiriman & Pembayaran</h2>
-        <div style="font-size: 0.85rem; font-weight: bold; margin-bottom: 8px;">Ringkasan Pesanan:</div>
-        <div id="checkout-summary-items" style="margin-bottom: 15px;"></div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold;">
+        <h2 style="font-size: 1.05rem; margin-bottom: 12px;">Checkout & Pembayaran</h2>
+        
+        <div style="font-size: 0.8rem; font-weight: bold; margin-bottom: 6px;">Ringkasan Barang Dipilih:</div>
+        <div id="checkout-summary-items" style="margin-bottom: 12px; background: #fafafa; padding: 10px; border-radius: 8px; border: 1px solid #eee;"></div>
+
+        <div style="font-size: 0.8rem; font-weight: bold; margin-bottom: 6px;">Pilih Metode Pembayaran:</div>
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+            <div class="pay-box active" id="pay-cod" onclick="selectPaymentMethod('COD')">💵 COD</div>
+            <div class="pay-box" id="pay-qris" onclick="selectPaymentMethod('QRIS')">📱 QRIS</div>
+            <div class="pay-box" id="pay-bank" onclick="selectPaymentMethod('BANK')">🏦 Bank</div>
+        </div>
+
+        <div id="pay-info-qris" style="display: none; text-align: center; margin-bottom: 12px; padding: 10px; border: 1px solid #eee; border-radius: 8px; background: #fafafa;">
+            <p style="font-size: 0.75rem; color: #555; margin-bottom: 6px;">Scan Barcode QRIS berikut:</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=AZARIYA_PAYMENT" style="width: 110px; height: 110px;">
+        </div>
+
+        <div id="pay-info-bank" style="display: none; margin-bottom: 12px; padding: 10px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; font-size: 0.8rem;">
+            <strong>BCA Transfer:</strong><br>
+            <span style="font-size: 0.9rem; color: var(--primary-green); font-weight: bold;">8830-1234-5678</span><br>
+            a/n AZARIYA GADGET
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: bold;">
             <span>Total Tagihan:</span>
             <span id="checkout-total-price" style="color: var(--danger-red);">Rp 0</span>
         </div>
-        <button class="btn btn-primary" onclick="processCheckout()">Buat Pesanan</button>
+        <button class="btn btn-primary" onclick="processCheckout()">Buat Pesanan Sekarang</button>
     </div>
 
-    <!-- 5. PESANAN BERHASIL -->
+    <!-- 5. THANK YOU / PESANAN BERHASIL -->
     <div id="view-thankyou" class="page-view" style="text-align: center; padding-top: 40px;">
-        <i class="fas fa-check-circle" style="font-size: 3.5rem; color: var(--accent-green); margin-bottom: 15px;"></i>
-        <h2>Pesanan Gadget Berhasil!</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 10px 0 25px 0;">Pesananmu sedang disiapkan dan diserahkan ke kurir.</p>
+        <i class="fas fa-check-circle" style="font-size: 3.5rem; color: var(--accent-green); margin-bottom: 12px;"></i>
+        <h2>Pesanan Berhasil!</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin: 8px 0 20px 0;">Metode Pembayaran: <strong id="thankyou-payment-type">COD</strong></p>
         <button class="btn btn-primary" onclick="navigateTo('orders')">Lihat Status Pesanan</button>
     </div>
 
     <!-- 6. RIWAYAT PESANAN -->
     <div id="view-orders" class="page-view">
-        <h2 style="font-size: 1.1rem; margin-bottom: 15px;">Riwayat Pesanan</h2>
+        <h2 style="font-size: 1.05rem; margin-bottom: 12px;">Riwayat Pesanan Saya</h2>
         <div id="orders-container"></div>
+    </div>
+
+    <!-- 7. LOGIN ADMIN -->
+    <div id="view-admin-login" class="page-view" style="padding-top: 30px;">
+        <h2 style="font-size: 1.1rem; text-align: center; margin-bottom: 15px;">Login Khusus Admin</h2>
+        <form onsubmit="handleAdminLogin(event)" style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+            <label style="font-size: 0.75rem; font-weight: bold;">Username</label>
+            <input type="text" id="admin-username" class="form-control" required placeholder="azariya">
+            <label style="font-size: 0.75rem; font-weight: bold;">Password</label>
+            <input type="password" id="admin-password" class="form-control" required placeholder="54321">
+            <p id="admin-login-error" style="color: var(--danger-red); font-size: 0.75rem; display: none; margin-bottom: 8px;">Username / password salah!</p>
+            <button type="submit" class="btn btn-primary">Masuk Admin</button>
+            <button type="button" onclick="changeRole()" class="btn btn-cart">Kembali ke Halaman Utama</button>
+        </form>
+    </div>
+
+    <!-- 8. MENU UTAMA ADMIN (PUSH BUTTON: DASHBOARD & LAPORAN) -->
+    <div id="view-admin-menu" class="page-view">
+        <h2 style="font-size: 1.1rem; margin-bottom: 15px;">Menu Utama Admin</h2>
+        <button class="btn btn-primary" onclick="navigateTo('admin-dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+        <button class="btn btn-cart" onclick="navigateTo('admin-laporan')"><i class="fas fa-file-invoice"></i> Laporan Penjualan</button>
+        <button class="btn btn-danger" style="margin-top: 15px;" onclick="changeRole()">Keluar dari Admin</button>
+    </div>
+
+    <!-- 9. DASHBOARD ADMIN (PUSH BUTTON: INPUT BARANG & VIEW BARANG) -->
+    <div id="view-admin-dashboard" class="page-view">
+        <h2 style="font-size: 1.1rem; margin-bottom: 15px;">Dashboard Kelola Barang</h2>
+        <button class="btn btn-primary" onclick="navigateTo('admin-input-barang')"><i class="fas fa-plus-circle"></i> Input Barang Baru</button>
+        <button class="btn btn-cart" onclick="navigateTo('admin-view-barang')"><i class="fas fa-list"></i> View Semua Barang</button>
+    </div>
+
+    <!-- 10. FORM INPUT BARANG ADMIN (UPLOAD FOTO DARI GALERI HP) -->
+    <div id="view-admin-input-barang" class="page-view">
+        <h2 style="font-size: 1.05rem; margin-bottom: 12px;">Input Barang Baru</h2>
+        <form onsubmit="handleSaveNewProduct(event)">
+            <label style="font-size: 0.75rem; font-weight: bold;">Nama Gadget</label>
+            <input type="text" id="admin-prod-name" class="form-control" placeholder="Contoh: iPad Pro M2" required>
+            
+            <label style="font-size: 0.75rem; font-weight: bold;">Harga (Rp)</label>
+            <input type="number" id="admin-prod-price" class="form-control" placeholder="Contoh: 15000000" required>
+            
+            <label style="font-size: 0.75rem; font-weight: bold;">Foto Produk (Ambil dari Galeri HP)</label>
+            <input type="file" id="admin-prod-file" class="form-control" accept="image/*" onchange="previewUploadImage(event)" required>
+            
+            <div style="margin-bottom: 12px; text-align: center; border: 1px dashed #ccc; padding: 10px; border-radius: 6px;">
+                <img id="preview-img" style="max-width: 100%; height: 110px; object-fit: cover; display: none; margin: 0 auto;">
+                <span id="preview-text" style="font-size: 0.75rem; color: #888;">Preview foto akan tampil di sini</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Simpan Barang ke Katalog</button>
+        </form>
+    </div>
+
+    <!-- 11. VIEW DAFTAR BARANG (TERMASUK DARI GALERI) -->
+    <div id="view-admin-view-barang" class="page-view">
+        <h2 style="font-size: 1.05rem; margin-bottom: 12px;">Daftar Semua Barang</h2>
+        <div id="admin-product-table-body"></div>
+    </div>
+
+    <!-- 12. LAPORAN PENJUALAN (PUSH BUTTON: HARIAN, BULANAN, TAHUNAN) -->
+    <div id="view-admin-laporan" class="page-view">
+        <h2 style="font-size: 1.05rem; margin-bottom: 12px;">Laporan Penjualan</h2>
+        <div style="display: flex; gap: 6px; margin-bottom: 15px;">
+            <button class="btn btn-cart" style="flex: 1; font-size: 0.75rem;" onclick="generateReport('Harian')">Harian</button>
+            <button class="btn btn-cart" style="flex: 1; font-size: 0.75rem;" onclick="generateReport('Bulanan')">Bulanan</button>
+            <button class="btn btn-cart" style="flex: 1; font-size: 0.75rem;" onclick="generateReport('Tahunan')">Tahunan</button>
+        </div>
+
+        <div id="laporan-result-box" style="background: #fafafa; border: 1px solid #eee; padding: 12px; border-radius: 8px; font-size: 0.8rem;">
+            Klik salah satu tombol di atas untuk melihat ringkasan laporan.
+        </div>
     </div>
 
     <!-- POPUP VARIANT BOTTOM SHEET -->
@@ -338,8 +487,8 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
+    <!-- BOTTOM NAV PEMBELI -->
+    <nav class="bottom-nav" id="main-bottom-nav" style="display: none;">
         <button class="nav-item active" id="nav-home" onclick="navigateTo('home')">
             <i class="fas fa-mobile-alt"></i> Beranda
         </button>
@@ -352,91 +501,63 @@
     </nav>
 </div>
 
+<!-- JAVASCRIPT LOGIC LENGKAP -->
 <script>
     const SHIPPING_FEE = 10000;
-    let pageHistory = ['home'];
+    let pageHistory = ['role-select'];
+    let currentPaymentMethod = "COD";
+    let uploadedImageBase64 = "";
 
-    // DATA 6 BARANG GADGET
-    let gadgetProducts = [
+    // DATA 6 BARANG GADGET DEFAULT
+    let gadgetProductsDefault = [
         { 
-            id: 1, 
-            name: "iPhone 15 Pro Max", 
-            price: 24999000, 
-            isBestseller: true, 
+            id: 1, name: "iPhone 15 Pro Max", price: 24999000, isBestseller: true, 
             image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&q=80", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            link: "https://www.apple.com/iphone-15-pro/",
-            desc: "Smartphone titanium dengan chip A17 Pro super kencang dan kamera 48MP Pro.", 
-            rating: 4.9, sold: 120, 
-            colors: ["Titanium Alami", "Titanium Hitam"], 
-            sizes: ["256GB", "512GB"] 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", link: "https://www.apple.com/iphone-15-pro/",
+            desc: "Smartphone titanium dengan chip A17 Pro super kencang.", rating: 4.9, sold: 120, 
+            colors: ["Titanium Alami", "Titanium Hitam"], sizes: ["256GB", "512GB"] 
         },
         { 
-            id: 2, 
-            name: "Samsung Galaxy S24 Ultra", 
-            price: 21999000, 
-            isBestseller: true, 
+            id: 2, name: "Samsung Galaxy S24 Ultra", price: 21999000, isBestseller: true, 
             image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500&q=80", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            link: "https://www.samsung.com/galaxy-s24-ultra/",
-            desc: "Fitur Galaxy AI canggih, layar Dynamic AMOLED 2X, dan dukungan S-Pen terintegrasi.", 
-            rating: 4.8, sold: 95, 
-            colors: ["Titanium Gray", "Titanium Black"], 
-            sizes: ["256GB", "512GB"] 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", link: "https://www.samsung.com/galaxy-s24-ultra/",
+            desc: "Fitur Galaxy AI canggih dan dukungan S-Pen.", rating: 4.8, sold: 95, 
+            colors: ["Titanium Gray", "Titanium Black"], sizes: ["256GB", "512GB"] 
         },
         { 
-            id: 3, 
-            name: "MacBook Air M2", 
-            price: 18499000, 
-            isBestseller: true, 
+            id: 3, name: "MacBook Air M2", price: 18499000, isBestseller: true, 
             image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            link: "https://www.apple.com/macbook-air-m2/",
-            desc: "Desain super tipis dengan perfoma tinggi Apple M2 Chip dan daya tahan baterai hingga 18 jam.", 
-            rating: 4.9, sold: 140, 
-            colors: ["Midnight", "Starlight", "Space Gray"], 
-            sizes: ["8GB/256GB", "16GB/512GB"] 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", link: "https://www.apple.com/macbook-air-m2/",
+            desc: "Super tipis dengan Chip Apple M2 dan baterai tahan lama.", rating: 4.9, sold: 140, 
+            colors: ["Midnight", "Starlight"], sizes: ["8GB/256GB", "16GB/512GB"] 
         },
         { 
-            id: 4, 
-            name: "iPad Air 5 M1", 
-            price: 10999000, 
-            isBestseller: false, 
+            id: 4, name: "iPad Air 5 M1", price: 10999000, isBestseller: false, 
             image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&q=80", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            link: "https://www.apple.com/ipad-air/",
-            desc: "Tablet powerful bertenaga Chip M1, mendukung Apple Pencil Gen 2 dan Magic Keyboard.", 
-            rating: 4.8, sold: 80, 
-            colors: ["Space Gray", "Blue", "Purple"], 
-            sizes: ["64GB", "256GB"] 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", link: "https://www.apple.com/ipad-air/",
+            desc: "Tablet powerful bertenaga Chip M1.", rating: 4.8, sold: 80, 
+            colors: ["Space Gray", "Blue"], sizes: ["64GB", "256GB"] 
         },
         { 
-            id: 5, 
-            name: "Apple Watch Series 9", 
-            price: 6799000, 
-            isBestseller: false, 
+            id: 5, name: "Apple Watch Series 9", price: 6799000, isBestseller: false, 
             image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&q=80", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            link: "https://www.apple.com/apple-watch-series-9/",
-            desc: "Smartwatch kesehatan lengkap dengan gesture Double Tap baru dan layar super terang.", 
-            rating: 4.7, sold: 60, 
-            colors: ["Midnight", "Starlight", "Pink"], 
-            sizes: ["41mm", "45mm"] 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", link: "https://www.apple.com/apple-watch-series-9/",
+            desc: "Smartwatch kesehatan lengkap dengan Double Tap.", rating: 4.7, sold: 60, 
+            colors: ["Midnight", "Starlight"], sizes: ["41mm", "45mm"] 
         },
         { 
-            id: 6, 
-            name: "AirPods Pro Gen 2", 
-            price: 3999000, 
-            isBestseller: false, 
+            id: 6, name: "AirPods Pro Gen 2", price: 3999000, isBestseller: false, 
             image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&q=80", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            link: "https://www.apple.com/airpods-pro/",
-            desc: "TWS dengan peredam bising Active Noise Cancellation hingga 2x lipat dan audio spasial.", 
-            rating: 4.9, sold: 200, 
-            colors: ["Putih Polos"], 
-            sizes: ["USB-C MagSafe"] 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", link: "https://www.apple.com/airpods-pro/",
+            desc: "TWS dengan Active Noise Cancellation superior.", rating: 4.9, sold: 200, 
+            colors: ["Putih Polos"], sizes: ["USB-C MagSafe"] 
         }
     ];
+
+    function getAllProducts() {
+        let custom = JSON.parse(localStorage.getItem('custom_products')) || [];
+        return [...gadgetProductsDefault, ...custom];
+    }
 
     function getStoredCart() { return JSON.parse(localStorage.getItem('cart_gadget')) || []; }
     function saveCart(cart) { localStorage.setItem('cart_gadget', JSON.stringify(cart)); }
@@ -444,10 +565,26 @@
     function saveOrders(orders) { localStorage.setItem('orders_gadget', JSON.stringify(orders)); }
     function formatRupiah(num) { return "Rp " + num.toLocaleString('id-ID'); }
 
-    let selectedDetailProduct = null;
-    let selectedColor = "";
-    let selectedSize = "";
+    // PILIH PERAN UTAMA
+    function selectRole(role) {
+        if (role === 'buyer') {
+            document.getElementById('main-header').style.display = 'flex';
+            document.getElementById('main-bottom-nav').style.display = 'flex';
+            navigateTo('home');
+        } else if (role === 'admin') {
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('main-bottom-nav').style.display = 'none';
+            navigateTo('admin-login');
+        }
+    }
 
+    function changeRole() {
+        document.getElementById('main-header').style.display = 'none';
+        document.getElementById('main-bottom-nav').style.display = 'none';
+        navigateTo('role-select');
+    }
+
+    // NAVIGASI APLIKASI
     function navigateTo(pageId, param = null) {
         document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -472,6 +609,7 @@
         if (pageId === 'cart') renderCart();
         if (pageId === 'checkout') openCheckoutPage();
         if (pageId === 'orders') renderOrders();
+        if (pageId === 'admin-view-barang') renderAdminProductTable();
 
         window.scrollTo(0, 0);
     }
@@ -480,13 +618,15 @@
         if (pageHistory.length > 1) {
             pageHistory.pop();
             const prevPage = pageHistory[pageHistory.length - 1];
-            navigateTo(prevPage);
+            if (prevPage === 'role-select') changeRole();
+            else navigateTo(prevPage);
             pageHistory.pop();
         } else {
-            navigateTo('home');
+            changeRole();
         }
     }
 
+    // RENDER PRODUK DI KATALOG PEMBELI
     function renderProducts() {
         const bestsellerGrid = document.getElementById('bestseller-grid');
         const regularGrid = document.getElementById('regular-grid');
@@ -495,7 +635,8 @@
         bestsellerGrid.innerHTML = '';
         regularGrid.innerHTML = '';
 
-        gadgetProducts.forEach(p => {
+        const allProds = getAllProducts();
+        allProds.forEach(p => {
             const cardHTML = `
                 <div class="product-card" onclick="navigateTo('detail', ${p.id})">
                     ${p.isBestseller ? '<span class="badge-bestseller">Bestseller</span>' : ''}
@@ -503,7 +644,7 @@
                     <div class="product-info">
                         <div class="product-title">${p.name}</div>
                         <div class="product-price">${formatRupiah(p.price)}</div>
-                        <div class="product-meta">⭐ ${p.rating} | terjual ${p.sold}</div>
+                        <div class="product-meta">⭐ ${p.rating || 5.0} | terjual ${p.sold || 0}</div>
                     </div>
                 </div>
             `;
@@ -512,65 +653,60 @@
         });
     }
 
+    let selectedDetailProduct = null;
+    let selectedColor = "";
+    let selectedSize = "";
+
+    // DETAIL PRODUK (GESER SLIDER FOTO/VIDEO)
     function renderProductDetailPage(id) {
-        const product = gadgetProducts.find(p => p.id === id) || gadgetProducts[0];
+        const allProds = getAllProducts();
+        const product = allProds.find(p => p.id === id) || allProds[0];
         selectedDetailProduct = product;
-        selectedColor = product.colors[0];
-        selectedSize = product.sizes[0];
+        selectedColor = product.colors ? product.colors[0] : "Standard";
+        selectedSize = product.sizes ? product.sizes[0] : "Default";
 
         const detailContainer = document.getElementById('detail-card-content');
         if (!detailContainer) return;
 
         detailContainer.innerHTML = `
-            <!-- GESER UNTUK LIHAT VIDEO + HYPERLINK -->
-            <div style="width:100%; border-radius:12px; overflow:hidden; margin-bottom:15px; border:1px solid #f0f0f0; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none;">
-                
-                <!-- Slide 1: Gambar Gadget (Clickable Hyperlink) -->
-                <a href="${product.link}" target="_blank" style="flex-shrink:0; width:100%; scroll-snap-align:start;">
-                    <img src="${product.image}" alt="${product.name}" style="width:100%; height:260px; object-fit:cover; display:block;">
+            <div style="width:100%; border-radius:12px; overflow:hidden; margin-bottom:12px; border:1px solid #f0f0f0; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none;">
+                <a href="${product.link || '#'}" target="_blank" style="flex-shrink:0; width:100%; scroll-snap-align:start;">
+                    <img src="${product.image}" alt="${product.name}" style="width:100%; height:250px; object-fit:cover; display:block;">
                 </a>
-                
-                <!-- Slide 2: Video Gadget (Geser ke kiri) -->
-                <a href="${product.link}" target="_blank" style="flex-shrink:0; width:100%; scroll-snap-align:start; background:#000; display:flex; align-items:center; justify-content:center; text-decoration:none;">
-                    <video src="${product.video}" controls style="width:100%; height:260px; object-fit:cover;"></video>
+                <a href="${product.link || '#'}" target="_blank" style="flex-shrink:0; width:100%; scroll-snap-align:start; background:#000; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+                    <video src="${product.video || 'https://www.w3schools.com/html/mov_bbb.mp4'}" controls style="width:100%; height:250px; object-fit:cover;"></video>
                 </a>
             </div>
-            <div style="font-size:0.75rem; color:#888; text-align:center; margin-top:-10px; margin-bottom:15px;">👈 Geser foto untuk melihat video produk</div>
+            <div style="font-size:0.75rem; color:#888; text-align:center; margin-top:-8px; margin-bottom:12px;">👈 Geser gambar untuk lihat video produk</div>
 
             <div style="display:flex; justify-content:space-between; align-items:baseline;">
-                <span style="font-size:1.4rem; font-weight:bold; color:var(--danger-red);">${formatRupiah(product.price)}</span>
-                <span style="font-size:0.8rem; color:#888;">${product.sold} Terjual</span>
+                <span style="font-size:1.3rem; font-weight:bold; color:var(--danger-red);">${formatRupiah(product.price)}</span>
+                <span style="font-size:0.75rem; color:#888;">${product.sold || 0} Terjual</span>
             </div>
-            <h2 style="font-size:1.1rem; color:#222; margin: 8px 0 15px 0;">${product.name}</h2>
+            <h2 style="font-size:1rem; color:#222; margin: 6px 0 12px 0;">${product.name}</h2>
 
+            ${product.colors ? `
+            <div style="margin-bottom:10px;">
+                <div style="font-size:0.8rem; font-weight:500; color:#555; margin-bottom:4px;">Pilih Warna:</div>
+                <div style="display:flex; gap:6px;">
+                    ${product.colors.map((c, idx) => `<button class="opt-btn ${idx === 0 ? 'active' : ''}" onclick="selectColor('${c}', this)">${c}</button>`).join('')}
+                </div>
+            </div>` : ''}
+
+            ${product.sizes ? `
             <div style="margin-bottom:12px;">
-                <div style="font-size:0.85rem; font-weight:500; color:#555; margin-bottom:6px;">Pilih Warna:</div>
-                <div style="display:flex; gap:8px;">
-                    ${product.colors.map((c, idx) => `
-                        <button class="opt-btn ${idx === 0 ? 'active' : ''}" onclick="selectColor('${c}', this)">${c}</button>
-                    `).join('')}
+                <div style="font-size:0.8rem; font-weight:500; color:#555; margin-bottom:4px;">Pilih Memori/Ukuran:</div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    ${product.sizes.map((s, idx) => `<button class="opt-btn ${idx === 0 ? 'active' : ''}" onclick="selectSize('${s}', this)">${s}</button>`).join('')}
                 </div>
+            </div>` : ''}
+
+            <div style="background:#f9f9f9; padding:10px; border-radius:8px; font-size:0.75rem; color:#444; margin-bottom:15px; border:1px solid #eee;">
+                <strong>Deskripsi:</strong>
+                <p style="margin-top:4px; color:#555;">${product.desc || 'Gadget kualitas terbaik garansi resmi.'}</p>
             </div>
 
-            <div style="margin-bottom:15px;">
-                <div style="font-size:0.85rem; font-weight:500; color:#555; margin-bottom:6px;">Pilih Memori/Ukuran:</div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    ${product.sizes.map((s, idx) => `
-                        <button class="opt-btn ${idx === 0 ? 'active' : ''}" onclick="selectSize('${s}', this)">${s}</button>
-                    `).join('')}
-                </div>
-            </div>
-
-            <div style="background:#f9f9f9; padding:10px 12px; border-radius:8px; font-size:0.8rem; color:#444; margin-bottom:15px; border:1px solid #eee;">
-                <strong>Deskripsi Spesifikasi:</strong>
-                <p style="margin-top:4px; color:#555; line-height:1.4;">
-                    ${product.desc} <br>
-                    <a href="${product.link}" target="_blank" style="color:#007bff; text-decoration:underline; font-weight:bold;">Lihat spesifikasi resmi di situs produsen</a>
-                </p>
-            </div>
-
-            <!-- TOMBOL PAS MENEMPEL DI BAWAH (BOTTOM 0) -->
-            <div style="position:fixed; bottom:0; left:0; right:0; max-width:500px; margin:0 auto; background:#fff; padding:12px 15px; border-top:1px solid #eee; display:flex; gap:10px; z-index:100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);">
+            <div style="position:fixed; bottom:0; left:0; right:0; max-width:500px; margin:0 auto; background:#fff; padding:10px 15px; border-top:1px solid #eee; display:flex; gap:8px; z-index:100;">
                 <button class="btn btn-cart" style="flex:1;" onclick="openVariantSheet('cart')"><i class="fas fa-cart-plus"></i> + Keranjang</button>
                 <button class="btn btn-buy" style="flex:1;" onclick="openVariantSheet('buy')">Beli Sekarang</button>
             </div>
@@ -583,15 +719,15 @@
         const sheetBody = document.getElementById('sheet-modal-body');
 
         sheetBody.innerHTML = `
-            <div style="display: flex; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
-                <img src="${selectedDetailProduct.image}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px;">
+            <div style="display: flex; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0;">
+                <img src="${selectedDetailProduct.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;">
                 <div>
-                    <div style="font-size: 1.1rem; font-weight: bold; color: var(--danger-red);">${formatRupiah(selectedDetailProduct.price)}</div>
-                    <div style="font-size: 0.75rem; color: #666; margin-top: 4px;">Pilihan: ${selectedColor}, ${selectedSize}</div>
+                    <div style="font-size: 1rem; font-weight: bold; color: var(--danger-red);">${formatRupiah(selectedDetailProduct.price)}</div>
+                    <div style="font-size: 0.75rem; color: #666; margin-top: 2px;">Variasi: ${selectedColor}, ${selectedSize}</div>
                 </div>
             </div>
-            <div style="margin-top: 15px;">
-                <button class="btn btn-buy" onclick="confirmVariantSubmit('${mode}')">Konfirmasi Produk</button>
+            <div style="margin-top: 12px;">
+                <button class="btn btn-buy" onclick="confirmVariantSubmit('${mode}')">Konfirmasi & Lanjutkan</button>
             </div>
         `;
         overlay.classList.add('active');
@@ -620,7 +756,8 @@
             cartId: Date.now(),
             product: selectedDetailProduct,
             color: selectedColor,
-            size: selectedSize
+            size: selectedSize,
+            selected: true // Centang otomatis saat baru masuk
         });
         saveCart(cart);
 
@@ -632,6 +769,7 @@
         }
     }
 
+    // KERANJANG BELANJA DENGAN CHECKBOX (REVISI 1)
     function renderCart() {
         let cart = getStoredCart();
         const container = document.getElementById('cart-items-container');
@@ -642,16 +780,15 @@
         }
 
         container.innerHTML = '';
-        let total = 0;
         cart.forEach((item, idx) => {
-            total += item.product.price;
             container.innerHTML += `
                 <div class="cart-item">
+                    <input type="checkbox" ${item.selected ? 'checked' : ''} onchange="toggleCartSelection(${idx})" style="width: 18px; height: 18px; cursor: pointer;">
                     <img src="${item.product.image}">
                     <div style="flex:1;">
-                        <div style="font-size:0.85rem; font-weight:bold;">${item.product.name}</div>
-                        <div style="font-size:0.75rem; color:#666;">${item.color}, ${item.size}</div>
-                        <div style="font-size:0.85rem; color:var(--danger-red); font-weight:bold; margin-top:2px;">${formatRupiah(item.product.price)}</div>
+                        <div style="font-size:0.8rem; font-weight:bold;">${item.product.name}</div>
+                        <div style="font-size:0.7rem; color:#666;">${item.color}, ${item.size}</div>
+                        <div style="font-size:0.8rem; color:var(--danger-red); font-weight:bold; margin-top:2px;">${formatRupiah(item.product.price)}</div>
                     </div>
                     <button style="border:none; background:none; color:var(--danger-red); cursor:pointer;" onclick="removeFromCart(${idx})">
                         <i class="fas fa-trash"></i>
@@ -659,7 +796,30 @@
                 </div>
             `;
         });
-        document.getElementById('cart-total-price').innerText = formatRupiah(total + SHIPPING_FEE);
+        updateCartTotal();
+    }
+
+    function toggleCartSelection(index) {
+        let cart = getStoredCart();
+        cart[index].selected = !cart[index].selected;
+        saveCart(cart);
+        updateCartTotal();
+    }
+
+    function updateCartTotal() {
+        let cart = getStoredCart();
+        let total = 0;
+        let selectedCount = 0;
+
+        cart.forEach(item => {
+            if (item.selected) {
+                total += item.product.price;
+                selectedCount++;
+            }
+        });
+
+        let finalTotal = selectedCount > 0 ? total + SHIPPING_FEE : 0;
+        document.getElementById('cart-total-price').innerText = formatRupiah(finalTotal);
     }
 
     function removeFromCart(index) {
@@ -671,10 +831,37 @@
 
     function goToCheckoutFromCart() {
         let cart = getStoredCart();
-        if (cart.length === 0) return alert("Keranjang kamu kosong!");
-        let items = cart.map(c => c.product);
-        localStorage.setItem('checkoutItems_gadget', JSON.stringify(items));
+        let selectedCartItems = cart.filter(item => item.selected);
+
+        if (selectedCartItems.length === 0) {
+            alert("Silakan centang (pilih) minimal satu barang yang mau di-checkout!");
+            return;
+        }
+
+        let itemsToCheckout = selectedCartItems.map(c => c.product);
+        localStorage.setItem('checkoutItems_gadget', JSON.stringify(itemsToCheckout));
         navigateTo('checkout');
+    }
+
+    // CHECKOUT METODE PEMBAYARAN (REVISI 3)
+    function selectPaymentMethod(method) {
+        currentPaymentMethod = method;
+        document.getElementById('pay-cod').classList.remove('active');
+        document.getElementById('pay-qris').classList.remove('active');
+        document.getElementById('pay-bank').classList.remove('active');
+
+        document.getElementById('pay-info-qris').style.display = 'none';
+        document.getElementById('pay-info-bank').style.display = 'none';
+
+        if (method === 'COD') document.getElementById('pay-cod').classList.add('active');
+        if (method === 'QRIS') {
+            document.getElementById('pay-qris').classList.add('active');
+            document.getElementById('pay-info-qris').style.display = 'block';
+        }
+        if (method === 'BANK') {
+            document.getElementById('pay-bank').classList.add('active');
+            document.getElementById('pay-info-bank').style.display = 'block';
+        }
     }
 
     function openCheckoutPage() {
@@ -685,7 +872,7 @@
         items.forEach(i => {
             total += i.price;
             container.innerHTML += `
-                <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
                     <span>${i.name}</span>
                     <strong>${formatRupiah(i.price)}</strong>
                 </div>
@@ -703,11 +890,17 @@
             id: "GDG-" + Math.floor(100000 + Math.random() * 900000),
             items: items,
             total: total,
+            paymentMethod: currentPaymentMethod,
             status: "Dikemas"
         });
 
         saveOrders(orders);
-        localStorage.removeItem('cart_gadget');
+
+        // Hapus barang yang telah di-checkout dari keranjang
+        let cart = getStoredCart().filter(item => !item.selected);
+        saveCart(cart);
+
+        document.getElementById('thankyou-payment-type').innerText = currentPaymentMethod;
         navigateTo('thankyou');
     }
 
@@ -715,7 +908,7 @@
         let orders = getStoredOrders();
         const container = document.getElementById('orders-container');
         if (orders.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding: 30px; color: #888;">Belum ada pesanan aktif.</div>`;
+            container.innerHTML = `<div style="text-align:center; padding: 30px; color: #888;">Belum ada riwayat pesanan.</div>`;
             return;
         }
 
@@ -723,21 +916,108 @@
         orders.forEach(o => {
             let names = o.items.map(i => i.name).join(', ');
             container.innerHTML += `
-                <div class="order-card" style="display:block;">
-                    <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:bold; margin-bottom:6px;">
+                <div class="cart-item" style="display:block;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:bold; margin-bottom:4px;">
                         <span>#${o.id}</span>
                         <span style="color:var(--primary-green);">${o.status}</span>
                     </div>
-                    <div style="font-size:0.8rem; color:#666; margin-bottom:6px;">${names}</div>
-                    <div style="font-size:0.85rem; font-weight:bold; color:var(--danger-red);">${formatRupiah(o.total)}</div>
+                    <div style="font-size:0.75rem; color:#666; margin-bottom:6px;">${names}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.7rem; background:#eee; padding:2px 6px; border-radius:4px;">Metode: ${o.paymentMethod || 'COD'}</span>
+                        <span style="font-size:0.8rem; font-weight:bold; color:var(--danger-red);">${formatRupiah(o.total)}</span>
+                    </div>
                 </div>
             `;
         });
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        renderProducts();
-    });
+    // ADMIN LOGIN & DASHBOARD ACTIONS
+    function handleAdminLogin(e) {
+        e.preventDefault();
+        const user = document.getElementById('admin-username').value;
+        const pass = document.getElementById('admin-password').value;
+        if (user === 'azariya' && pass === '54321') {
+            navigateTo('admin-menu');
+        } else {
+            document.getElementById('admin-login-error').style.display = 'block';
+        }
+    }
+
+    function previewUploadImage(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                uploadedImageBase64 = evt.target.result;
+                document.getElementById('preview-img').src = uploadedImageBase64;
+                document.getElementById('preview-img').style.display = 'block';
+                document.getElementById('preview-text').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function handleSaveNewProduct(e) {
+        e.preventDefault();
+        const name = document.getElementById('admin-prod-name').value;
+        const price = parseInt(document.getElementById('admin-prod-price').value);
+
+        if (!uploadedImageBase64) {
+            alert("Silakan pilih/upload foto barang!");
+            return;
+        }
+
+        let customProds = JSON.parse(localStorage.getItem('custom_products')) || [];
+        customProds.unshift({
+            id: Date.now(),
+            name: name,
+            price: price,
+            image: uploadedImageBase64,
+            video: "https://www.w3schools.com/html/mov_bbb.mp4",
+            desc: "Produk gadget baru yang diunggah oleh admin.",
+            rating: 5.0,
+            sold: 0,
+            colors: ["Hitam", "Putih"],
+            sizes: ["Standard"]
+        });
+
+        localStorage.setItem('custom_products', JSON.stringify(customProds));
+        alert("Barang baru berhasil disimpan dan sudah muncul di katalog!");
+        navigateTo('admin-dashboard');
+    }
+
+    function renderAdminProductTable() {
+        const allProds = getAllProducts();
+        const container = document.getElementById('admin-product-table-body');
+        if (!container) return;
+
+        container.innerHTML = '';
+        allProds.forEach(p => {
+            container.innerHTML += `
+                <div class="cart-item">
+                    <img src="${p.image}">
+                    <div style="flex:1;">
+                        <div style="font-size:0.8rem; font-weight:bold;">${p.name}</div>
+                        <div style="font-size:0.75rem; color:var(--danger-red);">${formatRupiah(p.price)}</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // LAPORAN ADMIN (HARIAN, BULANAN, TAHUNAN)
+    function generateReport(type) {
+        let orders = getStoredOrders();
+        let totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
+        let count = orders.length;
+
+        const reportBox = document.getElementById('laporan-result-box');
+        reportBox.innerHTML = `
+            <strong style="color: var(--primary-green);">📊 Laporan Penjualan ${type}</strong><br>
+            <div style="margin-top: 8px;">Total Transaksi: <strong>${count} Pesanan</strong></div>
+            <div>Total Pendapatan: <strong style="color: var(--danger-red);">${formatRupiah(totalRevenue)}</strong></div>
+        `;
+    }
 </script>
 
 </body>
